@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import Text, Optional
 from datetime import date, datetime
-
+from uuid import uuid4 as uuid
 
 app = FastAPI()
 
@@ -35,5 +35,7 @@ def get_posts():
 
 @app.post('/posts')
 def save_post(post: Post):
+    print(type(uuid()))
+    post.id = str(uuid())
     print(post.dict())
-    return "received"
+    return posts.append(post.dict())
