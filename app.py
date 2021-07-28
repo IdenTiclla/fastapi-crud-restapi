@@ -1,5 +1,5 @@
 from typing import Text
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Text, Optional
 from datetime import date, datetime
@@ -33,9 +33,18 @@ def read_root():
 def get_posts():
     return posts
 
+@app.get('/posts/{post_id}')
+def get_post(post_id: str):
+    print(post_id)
+    
+    for post in posts:
+        if post["id"] == post_id:
+            return post
+
+    raise HTTPException(status_code=404, detail="Post Not Found.")
+
 @app.post('/posts')
 def save_post(post: Post):
-    print(type(uuid()))
     post.id = str(uuid())
-    print(post.dict())
-    return posts.append(post.dict())
+    posts.append(post.dict())
+    return posts[-1]
