@@ -53,6 +53,18 @@ def delete_post(post_id: str):
 
     raise HTTPException(status_code=404, detail="Post Not Found.")
 
+@app.put('/posts/{post_id}')
+def update_post(post_id: str, updatedPost: Post):
+    for index, post in enumerate(posts):
+        if post["id"] == post_id:
+            posts[index]["title"] = updatedPost.title
+            posts[index]["content"] = updatedPost.content
+            posts[index]["author"] = updatedPost.author
+
+            return {"message": "Post has been updated successfully."}
+        
+    raise HTTPException(status_code=404, detail="Post Not Found.")
+
 
 @app.post('/posts')
 def save_post(post: Post):
